@@ -1,0 +1,9 @@
+BEGIN CODE
+INT x,y,z=5
+FLOAT t=12.6
+x,y,z=12
+BOOL a =false,b=true
+# this is a comment
+SCAN: t,y,z
+DISPLAY: x y z
+END CODE$
