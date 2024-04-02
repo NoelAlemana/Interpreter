@@ -41,6 +41,25 @@ public class Interpreter {
         scanner = new Scanner(System.in);
     }
 
+    //Helper Methods
+    private int[] countCommasAndEquals(String line) {
+        int commaCount = 0;
+        int equalsCount = 0;
+
+        // Count commas and equals signs
+        for (char c : line.toCharArray()) {
+            if (c == ',') {
+                commaCount++;
+            } else if (c == '=') {
+                equalsCount++;
+            }
+        }
+
+        // Return the counts as an array
+        return new int[]{commaCount, equalsCount};
+    }
+    // End of Helper Methods
+
     private void declareVariable(String variableName, Object value) {
         if (variables.containsKey(variableName)) {
             throw new IllegalArgumentException("Variable " + variableName + " already exists");
@@ -89,9 +108,12 @@ public class Interpreter {
 
             if (line.startsWith(INT_KEYWORD)) {
                 line = line.substring(INT_KEYWORD.length()).trim(); // Remove "INT" keyword
+                int []count =countCommasAndEquals(line);
+                if(!(count[0] <= count[1] - 1) && !(count[1]==1)) throw new IllegalArgumentException("Unequal Assignment Operators and Value");
                 String[] declarations = line.split(",");
                 int def = 0;
                 for (String declaration : declarations) {
+                    //System.out.println(declaration);
                     String[] parts = declaration.split("=");
                     String variableName = parts[0].trim();
                     def = (parts.length > 1) ? Integer.parseInt(parts[1].trim()) : 0;
@@ -104,6 +126,8 @@ public class Interpreter {
                 }
             } else if (line.startsWith(FLOAT_KEYWORD)) {
                 line = line.substring(FLOAT_KEYWORD.length()).trim(); // Remove "CHAR" keyword
+                int []count =countCommasAndEquals(line);
+                if(!(count[0] <= count[1] - 1) && !(count[1]==1)) throw new IllegalArgumentException("Unequal Assignment Operators and Value");
                 String[] declarations = line.split(",");
                 float def = 0;
                 for (String declaration : declarations) {
@@ -119,6 +143,8 @@ public class Interpreter {
                 }
             } else if (line.startsWith(CHAR_KEYWORD)) {
                 line = line.substring(CHAR_KEYWORD.length()).trim(); // Remove "CHAR" keyword
+                int []count =countCommasAndEquals(line);
+                if(!(count[0] <= count[1] - 1) && !(count[1]==1)) throw new IllegalArgumentException("Unequal Assignment Operators and Value");
                 String[] declarations = line.split(",");
                 char def = '.';
                 for (String declaration : declarations) {
@@ -134,6 +160,8 @@ public class Interpreter {
                 }
             } else if (line.startsWith(BOOL_KEYWORD)) {
                 line = line.substring(BOOL_KEYWORD.length()).trim(); // Remove "BOOL" keyword
+                int []count =countCommasAndEquals(line);
+                if(!(count[0] <= count[1] - 1) && !(count[1]==1)) throw new IllegalArgumentException("Unequal Assignment Operators and Value");
                 String[] declarations = line.split(",");
                 boolean def = Boolean.parseBoolean(null);
                 for (String declaration : declarations) {
@@ -186,32 +214,53 @@ public class Interpreter {
                     setVariableValue(variableName, value);
                 }
             }else if (line.contains("=")) { // Check if the line contains an assignment
-                String[] parts = line.split("="); // Split the line by "="
-                String variableName = parts[0].trim();
-                String[] variableNames = variableName.split(",");
-                String valueString = parts[1].trim();
-                if(parts.length >2) throw new IllegalArgumentException("Unequal Assignment Operators and Value");
+//                String[] parts = line.split("="); // Split the line by "="
+//                String variableName = parts[0].trim();
+//                String[] variableNames = variableName.split(",");
+//                String valueString = parts[1].trim();
+//                System.out.println(valueString);
+//                if(parts.length >2) throw new IllegalArgumentException("Unequal Assignment Operators and Value");
                 // Check if the variable exists
-                for(String var : variableNames){
-                    if (!variables.containsKey(var)) {
-                        throw new IllegalArgumentException("Variable " + var + " does not exist");
-                    }
-                    // Determine the data type of the variable and parse the value accordingly
-                    Object value;
-                    if (variables.get(var) instanceof Integer) {
-                        value = Integer.parseInt(valueString);
-                    } else if (variables.get(var) instanceof Float) {
-                        value = Float.parseFloat(valueString);
-                    } else if (variables.get(var) instanceof Character) {
-                        value = valueString.charAt(0);
-                    } else if (variables.get(var) instanceof Boolean) {
-                        value = Boolean.parseBoolean(valueString);
-                    } else {
-                        throw new IllegalArgumentException("Unknown data type for variable " + var);
-                    }
-                    // Set the new value for the variable
-                    setVariableValue(var, value);
+                int []count =countCommasAndEquals(line);
+                if(!(count[0] <= count[1] - 1) && !(count[1]==1)) throw new IllegalArgumentException("Unequal Assignment Operators and Value");
+                String[] declarations = line.split(",");
+                Object def = '.';
+                for (String declaration : declarations) {
+                    //System.out.println(declaration);
+                    String[] parts = declaration.split("=");
+                    String variableName = parts[0].trim();
+                    def = (parts.length > 1) ? Integer.parseInt(parts[1].trim()) : 0;
+
                 }
+
+                for (String declaration : declarations) {
+                    String[] parts = declaration.split("=");
+                    String variableName = parts[0].trim();
+                    Object value = (parts.length > 1) ? (parts[1]) : def;
+                    setVariableValue(variableName, value);
+                }
+//                for(String var : variableNames){
+//                    System.out.println(var);
+//
+//                    if (!variables.containsKey(var)) {
+//                        throw new IllegalArgumentException("Variable " + var + " does not exist");
+//                    }
+//                    // Determine the data type of the variable and parse the value accordingly
+//                    Object value;
+//                    if (variables.get(var) instanceof Integer) {
+//                        value = Integer.parseInt(valueString);
+//                    } else if (variables.get(var) instanceof Float) {
+//                        value = Float.parseFloat(valueString);
+//                    } else if (variables.get(var) instanceof Character) {
+//                        value = valueString.charAt(0);
+//                    } else if (variables.get(var) instanceof Boolean) {
+//                        value = Boolean.parseBoolean(valueString);
+//                    } else {
+//                        throw new IllegalArgumentException("Unknown data type for variable " + var);
+//                    }
+//                    // Set the new value for the variable
+//                    setVariableValue(var, value);
+//                }
             }else if (line.startsWith(ENDIF_KEYWORD)) {
                 // Handle END IF or END statement (end of a block)
                 // This could involve ending the current scope or similar actions

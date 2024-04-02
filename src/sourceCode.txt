@@ -1,9 +1,9 @@
 BEGIN CODE
-INT x,y,z=5
+INT x,y,z=1
 FLOAT t=12.6
-x,y,z=12
+#x,y,z=5
 #noel noel noel erin sasageyo
-BOOL a =false,b=true
+BOOL a=false,b=TRUE
 # this is a comment
 #SCAN: t,y,z
 DISPLAY: x&$&y&$&z&[Escape Code]

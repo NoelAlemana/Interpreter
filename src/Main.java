@@ -7,6 +7,7 @@ public class Main {
     public static void main(String[] args) {
         // Define the filename containing the CODE program
         String filename = "src/sourceCode.txt";
+        int x,y=12,z=12;
 
         try {
             // Create a FileReader to read the file
