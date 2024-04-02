@@ -64,7 +64,7 @@ public class Interpreter {
         if(!lines[0].startsWith(BEGIN_KEYWORD))
             throw new IllegalArgumentException("Source code must start with " + BEGIN_KEYWORD);
 
-        for (int i=1; i<lines.length; i++) {
+        for (int i=1; i<lines.length-1; i++) {
             String line = lines[i];
 
             if (line.startsWith(INT_KEYWORD)) {
