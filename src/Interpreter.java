@@ -6,6 +6,9 @@ public class Interpreter {
     private Scanner scanner;
 
     // Define reserved words as constants
+    private static final String BEGIN_KEYWORD = "BEGIN CODE";
+    private static final String END_KEYWORD = "END CODE";
+    private static final String NEXT_LINE_SYMBOL = "$";
     private static final String INT_KEYWORD = "INT";
     private static final String DISPLAY_KEYWORD = "DISPLAY:";
     private static final String CHAR_KEYWORD = "CHAR";
@@ -13,7 +16,7 @@ public class Interpreter {
     private static final String FLOAT_KEYWORD = "FLOAT";
     private static final String SCAN_KEYWORD = "SCAN:";
     private static final String IF_KEYWORD = "IF";
-    private static final String END_KEYWORD = "END IF";
+    private static final String ENDIF_KEYWORD = "END IF";
     private static final String BEGINWHILE_KEYWORD = "BEGIN WHILE";
     private static final String ENDWHILE_KEYWORD = "END WHILE";
     private static final String COMMENT_KEYWORD = "#";
@@ -57,7 +60,13 @@ public class Interpreter {
 
     public void interpret(String sourceCode) {
         String[] lines = sourceCode.split("\n");
-        for (String line : lines) {
+
+        if(!lines[0].startsWith(BEGIN_KEYWORD))
+            throw new IllegalArgumentException("Source code must start with " + BEGIN_KEYWORD);
+
+        for (int i=1; i<lines.length; i++) {
+            String line = lines[i];
+
             if (line.startsWith(INT_KEYWORD)) {
                 line = line.substring(INT_KEYWORD.length()).trim(); // Remove "INT" keyword
                 String[] declarations = line.split(",");
@@ -156,7 +165,6 @@ public class Interpreter {
                     }
                     setVariableValue(variableName, value);
                 }
-
             }else if (line.contains("=")) { // Check if the line contains an assignment
                 String[] parts = line.split("="); // Split the line by "="
                 String variableName = parts[0].trim();
@@ -184,11 +192,15 @@ public class Interpreter {
                     // Set the new value for the variable
                     setVariableValue(var, value);
                 }
-            }else if (line.startsWith(END_KEYWORD)) {
+            }else if (line.startsWith(ENDIF_KEYWORD)) {
                 // Handle END IF or END statement (end of a block)
                 // This could involve ending the current scope or similar actions
+            }else {
+                throw new IllegalArgumentException("Encountered unknown token: " + line);
             }
             // Handle other reserved words similarly
         }
+        if(!lines[lines.length-1].trim().equals(END_KEYWORD))
+            throw new IllegalArgumentException("Source code must end with " + END_KEYWORD);
     }
 }
