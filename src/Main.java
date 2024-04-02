@@ -18,6 +18,7 @@ public class Main {
             String line;
             // Read each line from the file and append it to the StringBuilder
             while ((line = bufferedReader.readLine()) != null) {
+                line = line.trim();
                 codeBuilder.append(line).append("\n");
             }
 
