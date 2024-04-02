@@ -93,6 +93,8 @@ public class Interpreter {
                 System.out.println();
             }else if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
                 System.out.print(trimmed.substring(1, trimmed.length() - 1));
+            }else if (trimmed.startsWith("\"") && trimmed.endsWith("\"")) {
+                System.out.print(trimmed.substring(1, trimmed.length() - 1));
             }else {
                 System.err.println("Error: Variable " + variableName + " not found");
             }

@@ -6,5 +6,5 @@ FLOAT t=12.6
 BOOL a=false,b=TRUE
 # this is a comment
 #SCAN: t,y,z
-DISPLAY: x & $ & y & $ & z & [Escape Code]
+DISPLAY: x & $ & y & $ & z & [Escape Code] & $ & "Last"
 END CODE
