@@ -85,12 +85,14 @@ public class Interpreter {
     private void displayVariables(String[] variableNames) {
 
         for (String variableName : variableNames) {
-            if (variables.containsKey(variableName)) {
-                System.out.print(getVariableValue(variableName));
-            }else if(variableName.equals("$")){
+            String nospace = variableName.replaceAll("\\s", ""); // Remove all spaces
+            String trimmed = variableName.trim();
+            if (variables.containsKey(nospace)) {
+                System.out.print(getVariableValue(nospace));
+            }else if(nospace.equals("$")){
                 System.out.println();
-            }else if (variableName.startsWith("[") && variableName.endsWith("]")) {
-                System.out.print(variableName.substring(1, variableName.length() - 1));
+            }else if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
+                System.out.print(trimmed.substring(1, trimmed.length() - 1));
             }else {
                 System.err.println("Error: Variable " + variableName + " not found");
             }
@@ -182,6 +184,7 @@ public class Interpreter {
             } else if (line.startsWith(DISPLAY_KEYWORD)) {
                 line = line.substring(DISPLAY_KEYWORD.length()).trim(); // Remove "DISPLAY" keyword
                 String[] variableNames = line.split("&");
+
                 displayVariables(variableNames);
             } else if (line.startsWith(SCAN_KEYWORD)) {
                 String variableNamesString = line.substring(SCAN_KEYWORD.length()).trim();
@@ -214,13 +217,6 @@ public class Interpreter {
                     setVariableValue(variableName, value);
                 }
             }else if (line.contains("=")) { // Check if the line contains an assignment
-//                String[] parts = line.split("="); // Split the line by "="
-//                String variableName = parts[0].trim();
-//                String[] variableNames = variableName.split(",");
-//                String valueString = parts[1].trim();
-//                System.out.println(valueString);
-//                if(parts.length >2) throw new IllegalArgumentException("Unequal Assignment Operators and Value");
-                // Check if the variable exists
                 int []count =countCommasAndEquals(line);
                 if(!(count[0] <= count[1] - 1) && !(count[1]==1)) throw new IllegalArgumentException("Unequal Assignment Operators and Value");
                 String[] declarations = line.split(",");
@@ -239,28 +235,6 @@ public class Interpreter {
                     Object value = (parts.length > 1) ? (parts[1]) : def;
                     setVariableValue(variableName, value);
                 }
-//                for(String var : variableNames){
-//                    System.out.println(var);
-//
-//                    if (!variables.containsKey(var)) {
-//                        throw new IllegalArgumentException("Variable " + var + " does not exist");
-//                    }
-//                    // Determine the data type of the variable and parse the value accordingly
-//                    Object value;
-//                    if (variables.get(var) instanceof Integer) {
-//                        value = Integer.parseInt(valueString);
-//                    } else if (variables.get(var) instanceof Float) {
-//                        value = Float.parseFloat(valueString);
-//                    } else if (variables.get(var) instanceof Character) {
-//                        value = valueString.charAt(0);
-//                    } else if (variables.get(var) instanceof Boolean) {
-//                        value = Boolean.parseBoolean(valueString);
-//                    } else {
-//                        throw new IllegalArgumentException("Unknown data type for variable " + var);
-//                    }
-//                    // Set the new value for the variable
-//                    setVariableValue(var, value);
-//                }
             }else if (line.startsWith(ENDIF_KEYWORD)) {
                 // Handle END IF or END statement (end of a block)
                 // This could involve ending the current scope or similar actions

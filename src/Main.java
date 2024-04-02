@@ -39,6 +39,5 @@ public class Main {
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
         }
-
     }
 }
