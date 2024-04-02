@@ -64,10 +64,15 @@ public class Interpreter {
     }
 
     private void displayVariables(String[] variableNames) {
+
         for (String variableName : variableNames) {
             if (variables.containsKey(variableName)) {
-                System.out.print(variableName + " = " + getVariableValue(variableName));
-            } else {
+                System.out.print(getVariableValue(variableName));
+            }else if(variableName.equals("$")){
+                System.out.println();
+            }else if (variableName.startsWith("[") && variableName.endsWith("]")) {
+                System.out.print(variableName.substring(1, variableName.length() - 1));
+            }else {
                 System.err.println("Error: Variable " + variableName + " not found");
             }
         }
@@ -148,7 +153,7 @@ public class Interpreter {
                 continue;
             } else if (line.startsWith(DISPLAY_KEYWORD)) {
                 line = line.substring(DISPLAY_KEYWORD.length()).trim(); // Remove "DISPLAY" keyword
-                String[] variableNames = line.split(" ");
+                String[] variableNames = line.split("&");
                 displayVariables(variableNames);
             } else if (line.startsWith(SCAN_KEYWORD)) {
                 String variableNamesString = line.substring(SCAN_KEYWORD.length()).trim();
