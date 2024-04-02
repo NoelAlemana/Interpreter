@@ -21,6 +21,22 @@ public class Interpreter {
     private static final String ENDWHILE_KEYWORD = "END WHILE";
     private static final String COMMENT_KEYWORD = "#";
 
+
+private static final String ARITHMETIC_PARENTHESIS_OPEN = "(";
+	private static final String ARITHMETIC_PARENTHESIS_CLOSE = ")";
+	private static final String ARITHMETIC_MULTIPLICATION = "*";
+	private static final String ARITHMETIC_DIVISION = "/";
+	private static final String ARITHMETIC_MODULO = "%";
+	private static final String ARITHMETIC_ADDITION = "+";
+	private static final String ARITHMETIC_SUBTRACTION = "-";
+	private static final String ARITHMETIC_GREATER_THAN = ">";
+	private static final String ARITHMETIC_LESS_THAN = "<";
+	private static final String ARITHMETIC_GREATERTHAN_EQUAL = ">=";
+	private static final String ARITHMETIC_LESSTHAN_EQUAL = "<=";
+	private static final String ARITHMETIC_EQUAL = "==";
+	private static final String ARITHMETIC_NOTEQUAL = "<>";
+
+
     public Interpreter() {
         variables = new HashMap<>();
         scanner = new Scanner(System.in);
